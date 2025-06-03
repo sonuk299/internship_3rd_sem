@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rapid Fire Quiz</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+    }
+
+   body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at center, midnightblue 0%, black 100%);
+  color: whitesmoke;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  overflow-x: hidden;
+}
+
+.container {
+  background: darkslateblue;
+  max-width: 480px;
+  width: 100%;
+  border-radius: 16px;
+  box-shadow:
+    0 8px 30px rgba(0, 255, 224, 0.2),
+    inset 0 0 40px rgba(0, 255, 224, 0.1);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  position: relative;
+  animation: fadeIn 1s ease forwards;
+}
+
+h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 500;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: aqua;
+  text-shadow: 0 0 8px aqua;
+  user-select: none;
+}
+
+#question {
+  min-height: 3.5rem;
+}
+
+#answers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+button {
+  cursor: pointer;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.3);
+  color: darkslategray;
+  background: aqua;
+  user-select: none;
+  text-shadow: 0 0 1px cadetblue;
+}
+
+button:hover:not(:disabled) {
+  background: mediumaquamarine;
+  box-shadow:
+    0 6px 15px rgba(0, 213, 179, 0.6);
+  transform: translateY(-3px);
+}
+
+button:disabled {
+  cursor: default;
+  opacity: 0.7;
+  box-shadow: none;
+  transform: none;
+}
+
+button.correct {
+  background: limegreen !important;
+  color: white;
+  box-shadow: 0 0 12px limegreen;
+}
+
+button.wrong {
+  background: red !important;
+  color: white;
+  box-shadow: 0 0 12px red;
+}
+
+#quiz-result {
+  font-weight: 700;
+  font-size: 1.3rem;
+  height: 2rem;
+  margin-bottom: 1rem;
+  user-select: none;
+  color: aqua;
+  text-shadow: 0 0 10px aqua;
+  min-height: 2rem;
+}
+
+#restart-btn {
+  background: deepskyblue;
+  box-shadow: 0 0 20px deepskyblue;
+  font-size: 1.1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  display: none;
+  margin: 0 auto;
+  user-select: none;
+}
+
+#restart-btn:hover {
+  background: dodgerblue;
+  box-shadow: 0 0 30px dodgerblue;
+  transform: translateY(-3px);
+}
+
+.joke {
+  margin-top: 3rem;
+  background: midnightblue;
+  padding: 1.25rem 1.5rem;
+  border-radius: 14px;
+  box-shadow: inset 0 0 15px rgba(0, 255, 224, 0.2);
+  color: paleturquoise;
+  font-style: italic;
+  font-size: 1.1rem;
+  user-select: none;
+  min-height: 3.5rem;
+}
+
+.joke button {
+  margin-top: 1rem;
+  width: 100%;
+  background: aqua;
+  color: darkslategray;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 255, 224, 0.5);
+  transition: background 0.3s ease;
+}
+
+.joke button:hover {
+  background: mediumaquamarine;
+  box-shadow: 0 6px 25px rgba(0, 200, 179, 0.7);
+  transform: translateY(-2px);
+}
+
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .container {
+        padding: 2rem 1.5rem;
+      }
+
+      #answers {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2 id="question">Loading question...</h2>
+    <div id="answers"></div>
+    <div id="quiz-result"></div>
+    <button id="restart-btn" onclick="restartQuiz()">Restart Quiz</button>
+
+    <section class="joke">
+      <h2>Random Joke</h2>
+      <p id="joke-text">Click the button to get a joke.</p>
+      <button onclick="getJoke()">Get Joke</button>
+    </section>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is the capital of France?",
+        options: { a: "Berlin", b: "Madrid", c: "Paris" },
+        correct: "c"
+      },
+      {
+        question: "Which planet is known as the Red Planet?",
+        options: { a: "Mars", b: "Venus", c: "Jupiter" },
+        correct: "a"
+      },
+      {
+        question: "Who wrote 'Romeo and Juliet'?",
+        options: { a: "Charles Dickens", b: "William Shakespeare", c: "Jane Austen" },
+        correct: "b"
+      }
+    ];
+
+    let currentQuestion = 0;
+
+    function loadQuestion() {
+  const q = questions[currentQuestion];
+  document.getElementById("question").textContent = `${currentQuestion + 1}. ${q.question}`;
+
+  const answersDiv = document.getElementById("answers");
+  answersDiv.innerHTML = "";
+
+  for (let key in q.options) {
+    const btn = document.createElement("button");
+    btn.textContent = `${key.toUpperCase()}) ${q.options[key]}`;
+    btn.onclick = () => checkAnswer(key, btn);
+    answersDiv.appendChild(btn);
+  }
+
+  document.getElementById("quiz-result").textContent = "";
+  document.getElementById("restart-btn").style.display = "none";
+}
+
+    function checkAnswer(answer, button) {
+      const q = questions[currentQuestion];
+      const result = document.getElementById("quiz-result");
+      const buttons = document.querySelectorAll("#answers button");
+
+      buttons.forEach(b => b.disabled = true);
+
+      if (answer === q.correct) {
+        result.textContent = "✅ Correct!";
+        button.classList.add("correct");
+      } else {
+        result.textContent = "❌ Incorrect.";
+        button.classList.add("wrong");
+      }
+
+      currentQuestion++;
+
+      setTimeout(() => {
+        if (currentQuestion < questions.length) {
+          loadQuestion();
+        } else {
+          document.getElementById("question").textContent = "🎉 Quiz Complete!";
+          document.getElementById("answers").innerHTML = "";
+          result.textContent = "";
+          document.getElementById("restart-btn").style.display = "block";
+        }
+      }, 1000);
+    }
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      loadQuestion();
+    }
+
+    window.onload = loadQuestion;
+
+    function getJoke() {
+      fetch("https://official-joke-api.appspot.com/random_joke")
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("joke-text").textContent =
+            data.setup + " — " + data.punchline;
+        })
+        .catch(() => {
+          document.getElementById("joke-text").textContent = "Failed to load joke.";
+        });
+    }
+  </script>
+</body>
+</html>
