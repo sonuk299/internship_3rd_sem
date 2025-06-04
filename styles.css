@@ -1,0 +1,294 @@
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', 'Roboto Slab', serif;
+}
+
+body {
+  background: linear-gradient(to bottom, white, honeydew);
+  color: midnightblue;
+  min-height: 100vh;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+a {
+  color: teal;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* Top Navigation */
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: rgba(245, 255, 250, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid aquamarine;
+  box-shadow: 0 2px 4px lightseagreen;
+  z-index: 1000;
+}
+
+.top-nav button {
+  background: transparent;
+  border: none;
+  color: indigo;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 10px 20px;
+  border-radius: 10px;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.top-nav button:hover,
+.top-nav button.active {
+  background-color: lavender;
+  color: darkgreen;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+/* Side Navigation */
+.side-nav {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 160px;
+  background: rgba(224, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  border-right: 1px solid lightcyan;
+  border-radius: 0 20px 20px 0;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 999;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.side-nav.hidden,
+body.todo-active .side-nav {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.side-nav a {
+  position: relative;
+  left: -120px;
+  width: 160px;
+  padding: 15px 20px;
+  color: darkslateblue;
+  font-weight: 600;
+  font-size: 1.2rem;
+  border-left: 4px solid transparent;
+  border-radius: 0 20px 20px 0;
+  background: rgba(255, 250, 205, 0.4);
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+.side-nav a:hover,
+.side-nav a.active {
+  left: 0;
+  background-color: lightgoldenrodyellow;
+  border-left-color: darkslategray;
+  font-weight: 700;
+}
+
+/* Main content */
+main {
+  padding: 90px 40px 40px;
+  max-width: 900px;
+  margin-left: calc(160px + (100vw - 160px - 900px) / 2);
+}
+
+body.todo-active main {
+  margin: 0 auto;
+}
+
+/* Content sections */
+.content-section {
+  display: none;
+}
+.content-section.active {
+  display: block;
+}
+
+/* Rounded boxes */
+.rounded-box {
+  background-color: ghostwhite;
+  opacity: 0.95;
+  border-radius: 20px;
+  padding: 25px 40px;
+  box-shadow: 0 8px 32px plum;
+  margin-bottom: 40px;
+  user-select: none;
+  transition: box-shadow 0.3s ease;
+}
+
+.rounded-box:hover {
+  box-shadow: 0 12px 48px thistle;
+}
+
+/* Headings */
+.rounded-box.about h1 {
+  font-size: 2.8rem;
+  text-align: center;
+  color: darkmagenta;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 1rem;
+  font-weight: 400;
+  font-style: italic;
+  text-align: center;
+  color: slategray;
+  margin-bottom: 20px;
+}
+
+h2 {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: seagreen;
+}
+
+/* Skills & Projects List */
+.skills-list,
+.project ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.skills-list li,
+.project ul li {
+  background-color: lightyellow;
+  padding: 8px 12px;
+  margin: 6px 0;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: 600;
+  color: darkolivegreen;
+}
+
+/* Projects */
+.project {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+/* To-Do Box */
+.todo-box form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#todo-input {
+  flex-grow: 1;
+  padding: 10px 15px;
+  font-size: 1rem;
+  text-align: center;
+  border: 2px solid mediumvioletred;
+  border-radius: 15px 0 0 15px;
+  outline: none;
+}
+
+#todo-input:focus {
+  border-color: cornflowerblue;
+}
+
+.todo-box button {
+  padding: 10px 20px;
+  font-weight: 600;
+  background-color: crimson;
+  color: ivory;
+  border: none;
+  border-radius: 0 15px 15px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.todo-box button:hover {
+  background-color: darkred;
+}
+
+/* To-Do List */
+#todo-list {
+  list-style: none;
+  padding: 0;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#todo-list li {
+  background-color: palegreen;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  color: darkslategray;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+#todo-list li.completed {
+  text-decoration: line-through;
+  background-color: gainsboro;
+  color: darkgray;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 10px 0;
+  font-size: 0.9rem;
+  color: dimgray;
+  backdrop-filter: blur(10px);
+  width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .side-nav {
+    display: none;
+  }
+
+  main {
+    margin: 0 auto;
+    padding: 90px 20px 20px;
+    max-width: 100%;
+  }
+
+  .top-nav button {
+    padding: 10px 15px;
+    font-size: 1rem;
+    margin: 0 5px;
+  }
+
+  .rounded-box {
+    padding: 20px;
+  }
+
+  #todo-input {
+    width: 70%;
+  }
+}
